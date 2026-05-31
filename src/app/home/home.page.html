@@ -1,20 +1,31 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Blank
+      TaskMaster Lite
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-item>
+    <ion-label position="stacked">Nueva Tarea</ion-label>
+    <ion-input [(ngModel)]="newTaskStr" placeholder="Ejem: Estudiar TypeScript"></ion-input>
+    </ion-item>
+    @if (errorMessage) {
+      <ion-text color="danger">{{errorMessage}}</ion-text>
+    }
+    </ion-content>
+    <ion-button expand="block" color="dark" (click)="addTask()" [disabled]="!isValidTitle()">Agregar Tarea</ion-button>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
-</ion-content>
+<ion-list>
+  @for ( task of tasks; track task.id) {
+    <ion-item>
+    <ion-label>
+      {{task.title}}
+    </ion-label>
+  </ion-item>
+  }
+
+</ion-list>
+
+
