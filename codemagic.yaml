@@ -3,7 +3,7 @@ workflows:
     name: Ionic iOS
     max_build_duration: 120
     environment:
-      node: v20.19.0
+      node: v24.15.0
     scripts:
       - name: Install dependencies
         script: npm install
