@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>
+      TaskMaster Lite
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item>
+    <ion-input
+    type="text"
+    placeholder="Ingresa tu tarea"
+    name="task"
+    [(ngModel)]="newTask"/>
+
+    <ion-button (click)="addTask()">
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+</ion-content>
+    
+

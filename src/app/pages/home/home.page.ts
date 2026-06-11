@@ -1,30 +1,35 @@
 import { Component } from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonInput, IonButton, IonList, IonText } from '@ionic/angular/standalone';
-import { Task } from '../models/task.model';
-
+import { FormsModule } from '@angular/forms';
+import { 
+  IonHeader, IonToolbar, IonTitle, IonContent, IonItem, 
+  IonLabel, IonInput, IonButton, IonList, IonText, IonIcon
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { addCircleOutline } from 'ionicons/icons';
+import { Task } from '../../models/task.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonInput, IonButton, FormsModule, IonList, IonText],
+  imports: [
+    IonHeader, IonToolbar, IonTitle, IonContent, IonItem, 
+    IonLabel, IonInput, IonButton, FormsModule, IonList, 
+    IonText, IonIcon
+  ],
 })
 export class HomePage {
-
-  newTaskStr: string = '';
-  errorMessage: string | null = null;
   
+  newTask: string = '';  
+  errorMessage: string | null = null;
 
-
-  //Arreglo de tareas
   tasks: Task[] = [
     {
-      id:1,
-      title:'Configuración de Ionic',
-      description:'Instalar Node.js, AngularCli, IonicCli',
-      finished:true,
-      priority:'high'
+      id: 1,
+      title: 'Configuración de Ionic',
+      description: 'Instalar Node.js, AngularCli, IonicCli',
+      finished: true,
+      priority: 'high'
     },
     {
       id: 2,
@@ -36,6 +41,7 @@ export class HomePage {
   ];
 
   constructor() {
+    addIcons({ addCircleOutline });
     console.log(this.tasks);
   }
 
@@ -45,12 +51,12 @@ export class HomePage {
   }
 
   isValidTitle(): boolean {
-    const t = this.newTaskStr?.trim() ?? '';
+    const t = this.newTask?.trim() ?? '';  
     return t.length > 0 && !this.isDuplicateTitle(t);
   }
 
   addTask() {
-    const trimmed = this.newTaskStr?.trim() ?? '';
+    const trimmed = this.newTask?.trim() ?? '';  
     if (!trimmed) {
       this.errorMessage = 'El título no puede estar vacío.';
       return;
@@ -69,9 +75,8 @@ export class HomePage {
       priority: 'medium'
     };
     this.tasks.push(newTask);
-    this.newTaskStr = ''; // Limpiar el input después de agregar la tarea
+    this.newTask = '';  
     this.errorMessage = null;
     console.log(this.tasks);
   }
 }
-
