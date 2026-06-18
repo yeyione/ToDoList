@@ -24,13 +24,11 @@
 
   @if (taskList.length > 0) {
     <ion-list lines="full" class="task-list">
-      <ion-reorder-group (ionItemReorder)="handleReorder($event)">
+      <ion-reorder-group [disabled]="false" (ionItemReorder)="handleReorder($event)">
         @for (task of taskList; track task.id) {
           <ion-item-sliding #slidingItem>
             <ion-item>
-              <ion-reorder slot="start">
-                <ion-icon name="reorder-three-outline"></ion-icon>
-              </ion-reorder>
+              <ion-reorder slot="start"></ion-reorder>
               <ion-label class="ion-text-wrap">{{ task.title }}</ion-label>
             </ion-item>
 

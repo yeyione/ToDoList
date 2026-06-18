@@ -17,9 +17,10 @@ import {
   IonReorderGroup,
   IonTitle,
   IonToolbar,
+  ItemReorderEventDetail,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { addOutline, listOutline, reorderThreeOutline, trashOutline } from 'ionicons/icons';
+import { addOutline, listOutline, trashOutline } from 'ionicons/icons';
 import { Task } from '../../models/task.model';
 
 @Component({
@@ -53,7 +54,7 @@ export class HomePage {
   private alertController = inject(AlertController);
 
   constructor() {
-    addIcons({ addOutline, trashOutline, reorderThreeOutline, listOutline });
+    addIcons({ addOutline, trashOutline, listOutline });
   }
 
   addTask(): void {
@@ -79,10 +80,8 @@ export class HomePage {
     return this.taskList.some((task) => task.title.toLowerCase() === normalized);
   }
 
-  handleReorder(event: CustomEvent): void {
-    const movedTask = this.taskList.splice(event.detail.from, 1)[0];
-    this.taskList.splice(event.detail.to, 0, movedTask);
-    event.detail.complete();
+  handleReorder(event: CustomEvent<ItemReorderEventDetail>): void {
+    this.taskList = event.detail.complete(this.taskList) as Task[];
   }
 
   async confirmDelete(task: Task, slidingItem: IonItemSliding): Promise<void> {
