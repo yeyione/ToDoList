@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AlertController,
@@ -22,6 +22,7 @@ import {
 import { addIcons } from 'ionicons';
 import { addOutline, listOutline, trashOutline } from 'ionicons/icons';
 import { Task } from '../../models/task.model';
+import { TaskStorageService } from '../../services/task-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -46,15 +47,22 @@ import { Task } from '../../models/task.model';
     IonReorderGroup,
   ],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   task = '';
   taskList: Task[] = [];
 
   private nextId = 1;
   private alertController = inject(AlertController);
+  private taskStorage = inject(TaskStorageService);
 
   constructor() {
     addIcons({ addOutline, trashOutline, listOutline });
+  }
+
+  ngOnInit(): void {
+    const stored = this.taskStorage.load();
+    this.taskList = stored.tasks;
+    this.nextId = stored.nextId;
   }
 
   addTask(): void {
@@ -72,6 +80,7 @@ export class HomePage {
 
     this.taskList.push({ id: this.nextId++, title });
     this.task = '';
+    this.persistTasks();
     void this.showAlert('Tarea agregada', 'La tarea ha sido agregada exitosamente.');
   }
 
@@ -82,6 +91,7 @@ export class HomePage {
 
   handleReorder(event: CustomEvent<ItemReorderEventDetail>): void {
     this.taskList = event.detail.complete(this.taskList) as Task[];
+    this.persistTasks();
   }
 
   async confirmDelete(task: Task, slidingItem: IonItemSliding): Promise<void> {
@@ -107,6 +117,11 @@ export class HomePage {
 
   private deleteTask(id: number): void {
     this.taskList = this.taskList.filter((task) => task.id !== id);
+    this.persistTasks();
+  }
+
+  private persistTasks(): void {
+    this.taskStorage.save(this.taskList, this.nextId);
   }
 
   private async showAlert(header: string, message: string): Promise<void> {
